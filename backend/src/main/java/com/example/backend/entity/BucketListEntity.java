@@ -24,6 +24,9 @@ public class BucketListEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userId;
 
+    @Column(name = "contents", length = 200)
+    private String contents;
+
     @Column(name = "default_seq")
     private Integer defaultSeq;
 
