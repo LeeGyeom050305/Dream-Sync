@@ -32,7 +32,3 @@ spring:
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
-
-auth:
-  secretKey: 'uNlQ1xD8WRKNhG7P0Kns2+wUw1oYImUgUOcMmLyW7R0='
-  tokenExpiry: 18000000
