@@ -22,7 +22,7 @@ public class BucketListEntity {
     /** 사용자 참조 */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private UserEntity userId;
 
     @Column(name = "default_seq")
     private Integer defaultSeq;
