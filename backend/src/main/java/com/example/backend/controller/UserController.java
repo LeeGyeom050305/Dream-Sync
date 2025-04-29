@@ -1,12 +1,15 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.LoginRequest;
 import com.example.backend.entity.UserEntity;
 import com.example.backend.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -16,13 +19,15 @@ public class UserController {
     }
 
     // 로그인 API
+    @Operation(summary = "login", description = "User Login (Get Access Token)")
     @PostMapping("/login")
-    public String login(@RequestParam String userName, @RequestParam String password) {
-        try {
-            UserEntity user = userService.login(userName, password);
-            return "로그인 성공! " + user.getUserName() + "님 환영합니다.";  // 로그인 성공 시 메시지 반환
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();  // 로그인 실패 시 에러 메시지 반환
-        }
+    //@CheckRole({UserRoleType.USER, UserRoleType.ADMIN, UserRoleType.SADMIN})
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws Exception {
+        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty())
+            throw new Exception("username is required");
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty())
+            throw new Exception("password is required");
+
+        return ResponseEntity.ok(userService.login(loginRequest));
     }
 }
