@@ -34,7 +34,14 @@ dependencies {
 	// lombok
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+
+	// Logback Classic
+	implementation 'ch.qos.logback:logback-classic:1.5.13'
 
 }
 
