@@ -1,22 +1,24 @@
 package com.example.backend.controller;
 
+import com.example.backend.annotation.CheckRole;
 import com.example.backend.dto.LoginRequest;
-import com.example.backend.entity.UserEntity;
+import com.example.backend.dto.UserResponse;
+import com.example.backend.enums.UserRoleType;
 import com.example.backend.service.UserService;
+import com.example.backend.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     // 로그인 API
     @Operation(summary = "login", description = "User Login (Get Access Token)")
@@ -29,5 +31,17 @@ public class UserController {
             throw new Exception("password is required");
 
         return ResponseEntity.ok(userService.login(loginRequest));
+    }
+
+    @GetMapping
+    @CheckRole({UserRoleType.USER, UserRoleType.ADMIN, UserRoleType.SADMIN})
+    public ResponseEntity<UserResponse> getUser() {
+        return ResponseEntity.ok(userService.getUser(SecurityUtil.currentUserId()));
+    }
+
+    @GetMapping("/all")
+    @CheckRole({UserRoleType.USER, UserRoleType.ADMIN, UserRoleType.SADMIN})
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
