@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.enums.UserRoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -29,7 +30,8 @@ public class UserEntity {
     private String email;
 
     @Column(name = "role_type", length = 50)
-    private String roleType;
+    @Enumerated(EnumType.STRING)
+    private UserRoleType roleType;
 
     @Column(name = "delete_yn", length = 1)
     private String deleteYn;
