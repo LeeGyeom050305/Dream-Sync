@@ -1,7 +1,7 @@
 // App.js 수정 버전
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import { Navigate, Route, Routes } from "react-router-dom"; // ⛔ HashRouter 제거
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { login } from "./consts/uri";
 import CommonLayout from "./layouts/layout";
 import LoginContainer from './pages/containers/loginContainer';
@@ -11,15 +11,17 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { AuthProvider } from "./AuthContext";
 import TempHomePage from "./pages/TempHomePage";
+import {useSelector} from "react-redux";
 
 function App() {
-    const [homeUri] = useState("/home");
+    const rootUri = useSelector(state => state.root.homeUri);
 
+    // React Query 클라이언트 생성. 24 * 24 * 60 * 60 * 1000 (24일이 최대인듯. 이 이상으로 하면 캐싱 안 됨.)
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
-                staleTime: 0,
-                gcTime: 0,
+                staleTime: 0, // 10초 후에 데이터가 신선하지 않음
+                gcTime: 0, // 5분 후에 가비지 컬렉션
                 refetchOnWindowFocus: false,
             },
         },
@@ -37,14 +39,16 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <CommonLayout>
-                    <Routes>
-                        <Route path="/" element={<Navigate replace to={homeUri} />} />
-                        <Route path={login} element={<LoginContainer />} />
-                        <Route path="/home" element={<TempHomePage />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </CommonLayout>
+                <HashRouter>
+                    <CommonLayout>
+                        <Routes>
+                            <Route path="/" element={<Navigate replace to={rootUri}/>}/>
+                            <Route path={login} element={<LoginContainer/>}/>
+                            <Route path="/home" element={<TempHomePage />} />
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </CommonLayout>
+                </HashRouter>
             </AuthProvider>
         </QueryClientProvider>
     );
