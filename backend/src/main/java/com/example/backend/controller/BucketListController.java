@@ -1,42 +1,50 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.BucketListDTO;
 import com.example.backend.entity.BucketListEntity;
 import com.example.backend.service.BucketListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/buckets")
 @RequiredArgsConstructor
 public class BucketListController {
+
     private final BucketListService bucketListService;
 
     // Create
     @PostMapping
-    public BucketListEntity create(@RequestBody BucketListEntity bucket) {
-        return bucketListService.createBucket(bucket);
+    public BucketListDTO create(@RequestBody BucketListEntity bucket) {
+        BucketListEntity created = bucketListService.createBucket(bucket);
+        return new BucketListDTO(created);
     }
 
     // Read all
     @GetMapping
-    public List<BucketListEntity> getAll() {
-        return bucketListService.getAllBuckets();
+    public List<BucketListDTO> getAll() {
+        return bucketListService.getAllBuckets().stream()
+                .map(BucketListDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Read by ID
     @GetMapping("/{id}")
-    public BucketListEntity getById(@PathVariable Integer id) {
-        return bucketListService.getBucketById(id)
+    public BucketListDTO getById(@PathVariable Integer id) {
+        BucketListEntity bucket = bucketListService.getBucketById(id)
                 .orElseThrow(() -> new RuntimeException("찾을 수 없습니다."));
+        return new BucketListDTO(bucket);
     }
 
     // Update
     @PutMapping("/{id}")
-    public BucketListEntity update(@PathVariable Integer id, @RequestBody BucketListEntity updated) {
+    public BucketListDTO update(@PathVariable Integer id, @RequestBody BucketListEntity updated) {
         updated.setBucketListId(id);
-        return bucketListService.updateBucket(updated);
+        BucketListEntity result = bucketListService.updateBucket(updated);
+        return new BucketListDTO(result);
     }
 
     // Delete
