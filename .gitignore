@@ -1,0 +1,45 @@
+# Gradle 관련 파일 제외
+.gradle/
+build/
+bin/
+buildSrc/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+
+# VS Code 관련 파일 제외
+.vscode/
+
+# IntelliJ IDEA 관련 파일 제외
+.idea/
+*.iml
+
+# 기타 OS별 파일 제외
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Log 파일 제외
+*.log
+*.log.gz
+*.pid
+*.seed
+*.key
+
+# 환경 설정 파일 제외
+*.env
+*.local
+.env.*
+
+# Java와 관련된 기타 파일 제외
+*.class
+*.jar
+*.war
+*.ear
