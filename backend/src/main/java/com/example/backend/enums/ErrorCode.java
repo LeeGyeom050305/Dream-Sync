@@ -42,6 +42,7 @@ public enum ErrorCode {
     FORBIDDEN_MEMBER(HttpStatus.FORBIDDEN, "Unauthorized user."),
     DUPLICATE_USERNAME(HttpStatus.FORBIDDEN, "The username already exists."),
     DUPLICATE_KEY(HttpStatus.FORBIDDEN, "Duplicate key."),
+    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "The email is already registered."),
 
     /* 500 SERVER ERROR */
     IMAGE_UPLOAD_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload the image to the S3 bucket."),
