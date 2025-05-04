@@ -46,7 +46,7 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/actuator/**",
                         "/", "/index.html", "/manifest.json", "/static/**", "/*.png", "/error", "/*.ico", "/reports/**",
-                        "/api/test/**", "/users/login"
+                        "/api/test/**", "/users/login", "/users/signUp"
                 );
     }
 
