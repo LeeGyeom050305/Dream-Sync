@@ -32,11 +32,11 @@ public class BucketListService {
     }
 
     public List<BucketListEntity> getBucketsByDoneStatusY() {
-        return bucketListRepository.findByBucketDone("Y");
+        return bucketListRepository.findByBucketDone(true);
     }
 
     public List<BucketListEntity> getBucketsByDoneStatusN() {
-        return bucketListRepository.findByBucketDone("N");
+        return bucketListRepository.findByBucketDone(false);
     }
 
     // Update
@@ -49,16 +49,17 @@ public class BucketListService {
         bucketListRepository.deleteById(id);
     }
 
+    
+
     @Transactional
     public BucketListEntity markAsDone(Integer id) {
         BucketListEntity bucket = bucketListRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("버킷을 찾을 수 없습니다."));
 
-        if ("Y".equals(bucket.getBucketDone())) {
+        if (Boolean.TRUE.equals(bucket.getBucketDone())) {
             throw new IllegalStateException("이미 완료된 버킷입니다.");
         }
-
-        bucket.setBucketDone("Y");
+        bucket.setBucketDone(true);
         bucket.setUpdateDate(LocalDateTime.now());
 
         return bucketListRepository.save(bucket);
@@ -68,8 +69,25 @@ public class BucketListService {
         return bucketListRepository.findByContentsContainingIgnoreCase(keyword);
     }
 
+    public List<BucketListEntity> getAllSortedByInsertDate() {
+        return bucketListRepository.findAllByOrderByInsertDateDesc();
+    }
 
+    public List<BucketListEntity> searchByKeywordSorted(String keyword) {
+        return bucketListRepository.findByContentsContainingIgnoreCaseOrderByInsertDateDesc(keyword);
+    }
 
+    public List<BucketListEntity> getBucketsByDoneStatusSorted(Boolean done) {
+        return bucketListRepository.findByBucketDoneOrderByInsertDateDesc(done);
+    }
+
+    public List<BucketListEntity> getBucketListsByVisibility(Integer userId) {
+        return bucketListRepository.findByVisibleTrueOrUserIdUserId(userId);
+    }
+
+    public List<BucketListEntity> getBucketListsByVisibilityAndSort(Integer userId) {
+        return bucketListRepository.findByVisibleTrueOrUserIdUserIdOrderByInsertDateDesc(userId);
+    }
 
 
 }

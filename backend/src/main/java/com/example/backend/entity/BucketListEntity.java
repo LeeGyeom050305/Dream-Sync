@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 버킷 리스트 엔티티
@@ -32,12 +33,16 @@ public class BucketListEntity {
     @Column(name = "default_seq")
     private Integer defaultSeq;
 
-    @Column(name = "bucket_done", length = 1)
-    private String bucketDone;
+    @Column(name = "bucket_done", nullable = false)
+    private Boolean bucketDone;
+
+    @Column(name = "visible", nullable = false)
+    private Boolean visible;
 
     @Column(name = "insert_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime insertDate;
 
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
+
 }

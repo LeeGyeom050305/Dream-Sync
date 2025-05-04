@@ -31,6 +31,13 @@ public class BucketListController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/sorted")
+    public List<BucketListDTO> getAllSorted() {
+        return bucketListService.getAllSortedByInsertDate().stream()
+                .map(BucketListDTO::new)
+                .collect(Collectors.toList());
+    }
+
     // Read by ID
     @GetMapping("/{id}")
     public BucketListDTO getById(@PathVariable Integer id) {
@@ -79,6 +86,17 @@ public class BucketListController {
         return bucketListService.searchByKeyword(keyword).stream()
                 .map(BucketListDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/visible")
+    public List<BucketListEntity> getBucketLists(@RequestParam Integer userId) {
+        return bucketListService.getBucketListsByVisibility(userId);
+    }
+
+    // visible 상태에 맞춰 최신순으로 버킷리스트 조회
+    @GetMapping("/visible/sorted")
+    public List<BucketListEntity> getBucketListsSorted(@RequestParam Integer userId) {
+        return bucketListService.getBucketListsByVisibilityAndSort(userId);
     }
 
 

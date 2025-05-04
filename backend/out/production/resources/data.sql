@@ -9,12 +9,12 @@ INSERT INTO users (user_name, password, email, role_type, delete_yn, insert_date
 ('Eve',     '$2b$12$wuRgOZtw9cbDonYodyxDl.dqcW6OD8nlpdSkalEaEFKUK2xI67pdG', 'eve@example.com',     'USER',  'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- bucket_list 테이블 더미 데이터
-INSERT INTO bucket_list (user_id, contents, default_seq, bucket_done, insert_date, update_date) VALUES
-(1, '스카이다이빙 하기',     1, 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, '파리 여행 가기',       2, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(3, '책 100권 읽기',        3, 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(4, '자전거로 전국 일주',    4, 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(5, '마라톤 완주하기',      5, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO bucket_list (user_id, contents, default_seq, bucket_done, visible, insert_date, update_date) VALUES
+(1, '스카이다이빙 하기',     1, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, '파리 여행 가기',       2, true, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, '책 100권 읽기',        3, false, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(4, '자전거로 전국 일주',    4, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(5, '마라톤 완주하기',      5, true, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- tag 테이블 더미 데이터
 INSERT INTO tag (bucket_list_id, tag_name, insert_date, update_date) VALUES

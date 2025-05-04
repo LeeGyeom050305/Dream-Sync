@@ -8,6 +8,12 @@ import java.util.List;
 @Repository
 public interface BucketListRepository extends JpaRepository<BucketListEntity, Integer> {
 
-    List<BucketListEntity> findByBucketDone(String bucketDone);
+    List<BucketListEntity> findByBucketDone(Boolean  bucketDone);
     List<BucketListEntity> findByContentsContainingIgnoreCase(String keyword);
+    List<BucketListEntity> findByContentsContainingIgnoreCaseOrderByInsertDateDesc(String keyword);
+    List<BucketListEntity> findAllByOrderByInsertDateDesc();
+    List<BucketListEntity> findByBucketDoneOrderByInsertDateDesc(Boolean bucketDone);
+    List<BucketListEntity> findByVisibleTrueOrUserIdUserId(Integer userId);
+    List<BucketListEntity> findByVisibleTrueOrUserIdUserIdOrderByInsertDateDesc(Integer userId);
+
 }

@@ -25,8 +25,11 @@ public class BucketListDTO {
     @Schema(description = "기본 순서", example = "1")
     private Integer defaultSeq;
 
-    @Schema(description = "완료 여부", example = "Y")
-    private String bucketDone;
+    @Schema(description = "완료 여부", example = "true")
+    private Boolean bucketDone;
+
+    @Schema(description = "다른 사용자에게 표시 여부", example = "true")
+    private Boolean visible;
 
     @Schema(description = "등록일", example = "2025-05-01T12:00:00")
     private LocalDateTime insertDate;
@@ -40,6 +43,7 @@ public class BucketListDTO {
         this.contents = entity.getContents();
         this.defaultSeq = entity.getDefaultSeq();
         this.bucketDone = entity.getBucketDone();
+        this.visible = entity.getVisible();
         this.insertDate = entity.getInsertDate();
         this.updateDate = entity.getUpdateDate();
     }

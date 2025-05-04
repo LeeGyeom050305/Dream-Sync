@@ -16,7 +16,8 @@ CREATE TABLE bucket_list (
     user_id INT NOT NULL,
     contents VARCHAR(200),
     default_seq INT,
-    bucket_done VARCHAR(1),
+    bucket_done BOOLEAN NOT NULL DEFAULT FALSE,
+    visible BOOLEAN NOT NULL DEFAULT FALSE,
     insert_date TIMESTAMP,
     update_date TIMESTAMP,
     CONSTRAINT fk_user
