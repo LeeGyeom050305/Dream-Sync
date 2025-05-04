@@ -1,40 +1,31 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {Button, Form, Input} from 'antd';
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {loginApi} from "../../apis/userApi";
-import {useAuth} from "../../AuthContext";
-import {useSelector} from "react-redux";
+import {signUpApi} from "../../apis/signUpApi";
 
-const LoginContainer = () => {
+const SingUpContainer = () => {
     const navigate = useNavigate();
-    const {isAuthenticated} = useAuth();
-    const rootUri = useSelector(state => state.root.homeUri);
 
-    const onFinish = async (loginInfo) => {
+    const onFinish = async (params) => {
         try {
-            await loginApi(loginInfo);
-
-            navigate('/home');
+            console.log(params);
+            await signUpApi(params);
+            alert("회원가입이 완료되었습니다.");
+            navigate('/login');
         } catch (e) {
-            console.error(e);
+            // 사용자에게 오류 메시지 표시
+            alert(e.message || "회원가입 중 오류가 발생했습니다.");
         }
     };
-
-    // 로그인되어 있으면 홈으로 자동 리디렉트
-    useEffect(() => {
-        if (isAuthenticated()) {
-            navigate(rootUri);
-        }
-    }, [isAuthenticated, navigate, rootUri]);
 
     return (
         <Container>
             {/* 로그인 폼 영역 (하단) */}
             <LoginWrapper>
                 <Form
-                    name="login"
+                    name="signUp"
                     onFinish={onFinish}
                 >
                     <Form.Item
@@ -47,6 +38,11 @@ const LoginContainer = () => {
                         rules={[{required: true, message: 'Please input your password!'}]}>
                         <Input prefix={<LockOutlined/>} type="password" placeholder="Password"/>
                     </Form.Item>
+                    <Form.Item
+                        name="email"
+                        rules={[{required: true, message: 'Please input your email!'}]}>
+                        <Input prefix={<LockOutlined/>} type="email" placeholder="Email"/>
+                    </Form.Item>
                     <Form.Item>
                         <Button
                             block
@@ -54,7 +50,7 @@ const LoginContainer = () => {
                             htmlType="submit"
                             style={{backgroundColor: '#1890FF', borderColor: '#1890FF'}}
                         >
-                            Log In
+                            SignUp
                         </Button>
                     </Form.Item>
                 </Form>
@@ -85,4 +81,4 @@ const LoginWrapper = styled.div`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-export default LoginContainer;
+export default SingUpContainer;

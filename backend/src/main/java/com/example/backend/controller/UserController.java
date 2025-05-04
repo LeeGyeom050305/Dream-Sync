@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping("/login")
     //@CheckRole({UserRoleType.USER, UserRoleType.ADMIN, UserRoleType.SADMIN})
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws Exception {
-        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty())
+        if (loginRequest.getUserName() == null || loginRequest.getUserName().isEmpty())
             throw new Exception("username is required");
         if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty())
             throw new Exception("password is required");
