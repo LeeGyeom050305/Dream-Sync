@@ -30,6 +30,14 @@ public class BucketListService {
         return bucketListRepository.findById(id);
     }
 
+    public List<BucketListEntity> getBucketsByDoneStatusY() {
+        return bucketListRepository.findByBucketDone("Y");
+    }
+
+    public List<BucketListEntity> getBucketsByDoneStatusN() {
+        return bucketListRepository.findByBucketDone("N");
+    }
+
     // Update
     public BucketListEntity updateBucket(BucketListEntity bucket) {
         return bucketListRepository.save(bucket); // ID 있으면 수정, 없으면 생성
@@ -39,4 +47,6 @@ public class BucketListService {
     public void deleteBucket(Integer id) {
         bucketListRepository.deleteById(id);
     }
+
+
 }

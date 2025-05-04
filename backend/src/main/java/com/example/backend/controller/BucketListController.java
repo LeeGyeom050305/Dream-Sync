@@ -39,6 +39,21 @@ public class BucketListController {
         return new BucketListDTO(bucket);
     }
 
+    @GetMapping("/done/y")
+    public List<BucketListDTO> getBucketsDoneY() {
+        return bucketListService.getBucketsByDoneStatusY().stream()
+                .map(BucketListDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    // Read - 'N'인 버킷 리스트 조회
+    @GetMapping("/done/n")
+    public List<BucketListDTO> getBucketsDoneN() {
+        return bucketListService.getBucketsByDoneStatusN().stream()
+                .map(BucketListDTO::new)
+                .collect(Collectors.toList());
+    }
+
     // Update
     @PutMapping("/{id}")
     public BucketListDTO update(@PathVariable Integer id, @RequestBody BucketListEntity updated) {
