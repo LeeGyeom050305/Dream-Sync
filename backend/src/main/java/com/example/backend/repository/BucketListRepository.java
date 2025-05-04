@@ -9,4 +9,5 @@ import java.util.List;
 public interface BucketListRepository extends JpaRepository<BucketListEntity, Integer> {
 
     List<BucketListEntity> findByBucketDone(String bucketDone);
+    List<BucketListEntity> findByContentsContainingIgnoreCase(String keyword);
 }

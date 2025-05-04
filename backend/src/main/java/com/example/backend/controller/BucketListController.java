@@ -67,4 +67,19 @@ public class BucketListController {
     public void delete(@PathVariable Integer id) {
         bucketListService.deleteBucket(id);
     }
+
+    @PatchMapping("/{id}/done")
+    public BucketListDTO markAsDone(@PathVariable Integer id) {
+        BucketListEntity updated = bucketListService.markAsDone(id);
+        return new BucketListDTO(updated);
+    }
+
+    @GetMapping("/search")
+    public List<BucketListDTO> search(@RequestParam String keyword) {
+        return bucketListService.searchByKeyword(keyword).stream()
+                .map(BucketListDTO::new)
+                .collect(Collectors.toList());
+    }
+
+
 }

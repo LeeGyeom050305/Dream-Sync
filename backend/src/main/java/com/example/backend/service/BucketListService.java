@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,28 @@ public class BucketListService {
     public void deleteBucket(Integer id) {
         bucketListRepository.deleteById(id);
     }
+
+    @Transactional
+    public BucketListEntity markAsDone(Integer id) {
+        BucketListEntity bucket = bucketListRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("버킷을 찾을 수 없습니다."));
+
+        if ("Y".equals(bucket.getBucketDone())) {
+            throw new IllegalStateException("이미 완료된 버킷입니다.");
+        }
+
+        bucket.setBucketDone("Y");
+        bucket.setUpdateDate(LocalDateTime.now());
+
+        return bucketListRepository.save(bucket);
+    }
+
+    public List<BucketListEntity> searchByKeyword(String keyword) {
+        return bucketListRepository.findByContentsContainingIgnoreCase(keyword);
+    }
+
+
+
 
 
 }
