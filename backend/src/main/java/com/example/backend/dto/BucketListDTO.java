@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,6 +38,9 @@ public class BucketListDTO {
     @Schema(description = "수정일", example = "2025-05-02T09:00:00")
     private LocalDateTime updateDate;
 
+    @Schema(description = "숫자 배열", example = "[1, 2, 3]")
+    private List<Integer> numberArray;
+
     public BucketListDTO(BucketListEntity entity) {
         this.bucketListId = entity.getBucketListId();
         this.userId = entity.getUserId().getUserId(); // Lazy 로딩 문제 발생 가능
@@ -46,5 +50,6 @@ public class BucketListDTO {
         this.visible = entity.getVisible();
         this.insertDate = entity.getInsertDate();
         this.updateDate = entity.getUpdateDate();
+        this.numberArray = entity.getNumberArray();
     }
 }

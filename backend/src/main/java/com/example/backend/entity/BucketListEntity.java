@@ -45,4 +45,9 @@ public class BucketListEntity {
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
 
+    @ElementCollection
+    @CollectionTable(name = "bucket_list_numbers", joinColumns = @JoinColumn(name = "bucket_list_id"))
+    @Column(name = "number_value")
+    private List<Integer> numberArray;
+
 }

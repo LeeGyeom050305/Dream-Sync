@@ -23,3 +23,15 @@ INSERT INTO tag (bucket_list_id, tag_name, insert_date, update_date) VALUES
 (3, '자기계발',   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (4, '운동',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (5, '성취',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO bucket_list_numbers (bucket_list_id, number_value) VALUES
+(1, 101),
+(1, 102),
+(1, 103),
+(2, 201),
+(2, 202),
+(3, 301),
+(3, 302),
+(4, 401),
+(5, 501),
+(5, 502);
