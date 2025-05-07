@@ -28,12 +28,15 @@ CREATE TABLE bucket_list (
 DROP TABLE IF EXISTS tag CASCADE;
 CREATE TABLE tag (
     tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(50) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS bucket_tag CASCADE;
+CREATE TABLE bucket_tag (
     bucket_list_id INT NOT NULL,
-    tag_name VARCHAR(50) NOT NULL,
-    insert_date TIMESTAMP,
-    update_date TIMESTAMP,
-    CONSTRAINT fk_bucket_list
-        FOREIGN KEY (bucket_list_id)
-        REFERENCES bucket_list(bucket_list_id)
-        ON DELETE CASCADE
+    tag_id INT NOT NULL,
+    PRIMARY KEY (bucket_list_id, tag_id),
+    FOREIGN KEY (bucket_list_id) REFERENCES bucket_list(bucket_list_id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tag(tag_id) ON DELETE CASCADE
 );
