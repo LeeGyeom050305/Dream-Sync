@@ -24,7 +24,7 @@ INSERT INTO tag (bucket_list_id, tag_name, insert_date, update_date) VALUES
 (4, '운동',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (5, '성취',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO bucket_list_numbers (bucket_list_id, number_value) VALUES
+INSERT INTO bucket_list_numbers (bucket_list_id, user_id) VALUES
 (1, 101),
 (1, 102),
 (1, 103),

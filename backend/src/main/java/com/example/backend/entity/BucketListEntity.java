@@ -47,7 +47,7 @@ public class BucketListEntity {
 
     @ElementCollection
     @CollectionTable(name = "bucket_list_numbers", joinColumns = @JoinColumn(name = "bucket_list_id"))
-    @Column(name = "number_value")
+    @Column(name = "user_id")
     private List<Integer> numberArray;
 
 }

@@ -42,7 +42,7 @@ CREATE TABLE tag (
 DROP TABLE IF EXISTS bucket_list_numbers CASCADE;
 CREATE TABLE bucket_list_numbers (
     bucket_list_id INT NOT NULL,
-    number_value INT,
+    user_id INT,
     CONSTRAINT fk_bucket_list_numbers
         FOREIGN KEY (bucket_list_id)
         REFERENCES bucket_list(bucket_list_id)
