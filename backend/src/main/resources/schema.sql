@@ -34,7 +34,7 @@ CREATE TABLE tag (
 
 DROP TABLE IF EXISTS bucket_tag CASCADE;
 CREATE TABLE bucket_tag (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    bucket_tag_id INT AUTO_INCREMENT PRIMARY KEY,
     bucket_list_id INT NOT NULL,
     tag_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

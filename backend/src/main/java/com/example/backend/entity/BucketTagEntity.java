@@ -19,7 +19,8 @@ public class BucketTagEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "bucket_tag_id")
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "bucket_list_id", nullable = false)
