@@ -34,9 +34,11 @@ CREATE TABLE tag (
 
 DROP TABLE IF EXISTS bucket_tag CASCADE;
 CREATE TABLE bucket_tag (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     bucket_list_id INT NOT NULL,
     tag_id INT NOT NULL,
-    PRIMARY KEY (bucket_list_id, tag_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bucket_list_id) REFERENCES bucket_list(bucket_list_id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tag(tag_id) ON DELETE CASCADE
+    FOREIGN KEY (tag_id) REFERENCES tag(tag_id) ON DELETE CASCADE,
+    UNIQUE (bucket_list_id, tag_id) -- 중복 방지
 );

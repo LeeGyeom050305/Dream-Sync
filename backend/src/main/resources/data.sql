@@ -24,10 +24,10 @@ INSERT INTO tag (tag_name) VALUES
 ('운동'),
 ('성취');
 
--- bucket_tag 테이블 더미 데이터 (버킷리스트 ID에 태그 연결)
-INSERT INTO bucket_tag (bucket_list_id, tag_id) VALUES
-(1, 1), -- 버킷리스트 1번에 '도전'
-(2, 2), -- 버킷리스트 2번에 '여행'
-(3, 3), -- 버킷리스트 3번에 '자기계발'
-(4, 4), -- 버킷리스트 4번에 '운동'
-(5, 5); -- 버킷리스트 5번에 '성취'
+-- bucket_tag 테이블 더미 데이터 (id는 AUTO_INCREMENT, created_at은 현재 시간)
+INSERT INTO bucket_tag (bucket_list_id, tag_id, created_at) VALUES
+(1, 1, CURRENT_TIMESTAMP), -- 버킷리스트 1번에 '도전'
+(2, 2, CURRENT_TIMESTAMP), -- 버킷리스트 2번에 '여행'
+(3, 3, CURRENT_TIMESTAMP), -- 버킷리스트 3번에 '자기계발'
+(4, 4, CURRENT_TIMESTAMP), -- 버킷리스트 4번에 '운동'
+(5, 5, CURRENT_TIMESTAMP); -- 버킷리스트 5번에 '성취'
