@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { login, signUp } from "./consts/uri";
+import HomePage from './pages/containers/HomePage';
 import CommonLayout from "./layouts/layout";
 import LoginContainer from './pages/containers/loginContainer';
 import SingUpContainer from './pages/containers/SingUpContainer';
@@ -48,6 +49,7 @@ function App() {
                             <Route path={signUp} element={<SingUpContainer/>}/>
                             <Route path="/home" element={<TempHomePage />} />
                             <Route path="*" element={<NotFound />} />
+                            <Route path="/main" element={<HomePage />} />
                         </Routes>
                     </CommonLayout>
                 </HashRouter>

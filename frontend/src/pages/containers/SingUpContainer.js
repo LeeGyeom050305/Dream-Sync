@@ -29,9 +29,9 @@ const SingUpContainer = () => {
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        name="userName"
+                        name="username"
                         rules={[{required: true, message: 'Please input your username!'}]}>
-                        <Input prefix={<UserOutlined/>} placeholder="UserName"/>
+                        <Input prefix={<UserOutlined/>} placeholder="username"/>
                     </Form.Item>
                     <Form.Item
                         name="password"
