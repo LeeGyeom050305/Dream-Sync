@@ -1,9 +1,11 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.LoginRequest;
+import com.example.backend.dto.UserCreateRequest;
 import com.example.backend.dto.UserResponse;
 import com.example.backend.entity.UserEntity;
 import com.example.backend.enums.ErrorCode;
+import com.example.backend.enums.UserRoleType;
 import com.example.backend.exception.AppException;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
@@ -39,7 +41,7 @@ public class UserService {
 
     // 로그인 처리 메서드
     public String login(LoginRequest loginRequest) {
-        UserEntity user = userRepository.findByUserName(loginRequest.getUsername())
+        UserEntity user = userRepository.findByUserName(loginRequest.getUserName())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         CustomUserDetailsService.UserPrincipal principal = CustomUserDetailsService.UserPrincipal.of(user);
@@ -52,6 +54,35 @@ public class UserService {
             throw new AppException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
         return authTokenProvider.createToken(principal);
+    }
+
+    public String signUp(UserCreateRequest request) {
+        // 이메일 중복 확인
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new AppException(ErrorCode.DUPLICATE_EMAIL);
+        }
+
+        // 사용자 이름 중복 확인 (선택 사항)
+        if (userRepository.findByUserName(request.getUserName()).isPresent()) {
+            throw new AppException(ErrorCode.DUPLICATE_USERNAME);
+        }
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+        // 사용자 생성
+        UserEntity user = UserEntity.builder()
+                .userName(request.getUserName())
+                .password(encodedPassword)
+                .email(request.getEmail())
+                .roleType(UserRoleType.USER) // 기본 역할 설정
+                .deleteYn("N")
+                .build();
+
+        // DB에 저장
+        userRepository.save(user);
+
+        return "User registration successful";
     }
 
     @Transactional(readOnly = true)

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/buckets")
+@RequestMapping("/v1/buckets")
 @RequiredArgsConstructor
 public class BucketListController {
 

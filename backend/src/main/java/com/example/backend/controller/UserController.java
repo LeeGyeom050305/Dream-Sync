@@ -2,11 +2,13 @@ package com.example.backend.controller;
 
 import com.example.backend.annotation.CheckRole;
 import com.example.backend.dto.LoginRequest;
+import com.example.backend.dto.UserCreateRequest;
 import com.example.backend.dto.UserResponse;
 import com.example.backend.enums.UserRoleType;
 import com.example.backend.service.UserService;
 import com.example.backend.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +27,17 @@ public class UserController {
     @PostMapping("/login")
     //@CheckRole({UserRoleType.USER, UserRoleType.ADMIN, UserRoleType.SADMIN})
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) throws Exception {
-        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty())
+        if (loginRequest.getUserName() == null || loginRequest.getUserName().isEmpty())
             throw new Exception("username is required");
         if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty())
             throw new Exception("password is required");
 
         return ResponseEntity.ok(userService.login(loginRequest));
+    }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<String> signUp(@Valid @RequestBody UserCreateRequest request) {
+        return ResponseEntity.ok(userService.signUp(request));
     }
 
     @GetMapping

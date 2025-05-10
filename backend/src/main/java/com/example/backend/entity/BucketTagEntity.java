@@ -3,32 +3,35 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "tag")
+@Table(name = "bucket_tag", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"bucket_list_id", "tag_id"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TagEntity {
+public class BucketTagEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
-    private Integer tagId;
+    @Column(name = "bucket_tag_id")
+    private Integer id;
 
-    @Column(name = "tag_name", nullable = false, unique = true, length = 50)
-    private String tagName;
+    @ManyToOne
+    @JoinColumn(name = "bucket_list_id", nullable = false)
+    private BucketListEntity bucketList;
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id", nullable = false)
+    private TagEntity tag;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BucketTagEntity> bucketTags = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
