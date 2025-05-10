@@ -31,3 +31,15 @@ INSERT INTO bucket_tag (bucket_list_id, tag_id, created_at) VALUES
 (3, 3, CURRENT_TIMESTAMP), -- 버킷리스트 3번에 '자기계발'
 (4, 4, CURRENT_TIMESTAMP), -- 버킷리스트 4번에 '운동'
 (5, 5, CURRENT_TIMESTAMP); -- 버킷리스트 5번에 '성취'
+
+INSERT INTO bucket_list_numbers (bucket_list_id, user_id) VALUES
+(1, 101),
+(1, 102),
+(1, 103),
+(2, 201),
+(2, 202),
+(3, 301),
+(3, 302),
+(4, 401),
+(5, 501),
+(5, 502);
