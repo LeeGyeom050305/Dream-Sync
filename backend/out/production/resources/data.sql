@@ -16,18 +16,22 @@ INSERT INTO bucket_list (user_id, contents, default_seq, bucket_done, visible, i
 (4, '자전거로 전국 일주',    4, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (5, '마라톤 완주하기',      5, true, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- tag 테이블 더미 데이터 (고유 태그만 입력)
-INSERT INTO tag (tag_name) VALUES
-('도전'),
-('여행'),
-('자기계발'),
-('운동'),
-('성취');
+-- tag 테이블 더미 데이터
+INSERT INTO tag (bucket_list_id, tag_name, insert_date, update_date) VALUES
+(1, '도전',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, '여행',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, '자기계발',   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(4, '운동',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(5, '성취',       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- bucket_tag 테이블 더미 데이터 (id는 AUTO_INCREMENT, created_at은 현재 시간)
-INSERT INTO bucket_tag (bucket_list_id, tag_id, created_at) VALUES
-(1, 1, CURRENT_TIMESTAMP), -- 버킷리스트 1번에 '도전'
-(2, 2, CURRENT_TIMESTAMP), -- 버킷리스트 2번에 '여행'
-(3, 3, CURRENT_TIMESTAMP), -- 버킷리스트 3번에 '자기계발'
-(4, 4, CURRENT_TIMESTAMP), -- 버킷리스트 4번에 '운동'
-(5, 5, CURRENT_TIMESTAMP); -- 버킷리스트 5번에 '성취'
+INSERT INTO bucket_list_numbers (bucket_list_id, number_value) VALUES
+(1, 101),
+(1, 102),
+(1, 103),
+(2, 201),
+(2, 202),
+(3, 301),
+(3, 302),
+(4, 401),
+(5, 501),
+(5, 502);
