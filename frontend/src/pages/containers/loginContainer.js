@@ -38,7 +38,7 @@ const LoginContainer = () => {
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        name="userName"
+                        name="username"
                         rules={[{required: true, message: 'Please input your username!'}]}>
                         <Input prefix={<UserOutlined/>} placeholder="UserName"/>
                     </Form.Item>

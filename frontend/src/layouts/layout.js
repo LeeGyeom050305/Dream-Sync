@@ -5,7 +5,7 @@ import {useLocation} from "react-router-dom";
 import {login} from "../consts/uri";
 import styled from "styled-components";
 
-const { Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const contentStyle = {
     display: "flex",
