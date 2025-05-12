@@ -2,10 +2,9 @@
 import React from 'react';
 import './App.css';
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import { login, signUp } from "./consts/uri";
+import { login } from "./consts/uri";
 import CommonLayout from "./layouts/layout";
 import LoginContainer from './pages/containers/loginContainer';
-import SingUpContainer from './pages/containers/SingUpContainer';
 import NotFound from "./pages/notFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
@@ -45,7 +44,6 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Navigate replace to={rootUri}/>}/>
                             <Route path={login} element={<LoginContainer/>}/>
-                            <Route path={signUp} element={<SingUpContainer/>}/>
                             <Route path="/home" element={<TempHomePage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>

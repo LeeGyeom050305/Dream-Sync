@@ -41,7 +41,7 @@ public class UserService {
 
     // 로그인 처리 메서드
     public String login(LoginRequest loginRequest) {
-        UserEntity user = userRepository.findByUserName(loginRequest.getUserName())
+        UserEntity user = userRepository.findByUserName(loginRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         CustomUserDetailsService.UserPrincipal principal = CustomUserDetailsService.UserPrincipal.of(user);
