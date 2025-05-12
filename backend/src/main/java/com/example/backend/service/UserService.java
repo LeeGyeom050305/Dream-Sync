@@ -17,9 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +39,7 @@ public class UserService {
 
     // 로그인 처리 메서드
     public String login(LoginRequest loginRequest) {
-        UserEntity user = userRepository.findByUserName(loginRequest.getUsername())
+        UserEntity user = userRepository.findByUserName(loginRequest.getUserName())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         CustomUserDetailsService.UserPrincipal principal = CustomUserDetailsService.UserPrincipal.of(user);
