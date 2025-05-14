@@ -1,9 +1,12 @@
 package com.example.backend.entity;
 
+import com.example.backend.entity.friend.FriendRequestEntity;
+import com.example.backend.entity.friend.UserBlockEntity;
 import com.example.backend.enums.UserRoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 사용자 엔티티
@@ -41,4 +44,16 @@ public class UserEntity {
 
     @Column(name = "update_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
+
+    @OneToMany(mappedBy = "senderId")
+    private List<FriendRequestEntity> sentRequests;
+
+    @OneToMany(mappedBy = "receiverId")
+    private List<FriendRequestEntity> receivedRequests;
+
+    @OneToMany(mappedBy = "blocker")
+    private List<UserBlockEntity> blockedUsers;
+
+    @OneToMany(mappedBy = "blocked")
+    private List<UserBlockEntity> blockedByUsers;
 }

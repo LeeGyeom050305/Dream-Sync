@@ -1,5 +1,6 @@
-package com.example.backend.entity;
+package com.example.backend.entity.friend;
 
+import com.example.backend.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class UserBlockEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer block_id;
 
     @ManyToOne
     @JoinColumn(name = "blocker_id", nullable = false)

@@ -56,26 +56,26 @@ CREATE TABLE bucket_list_numbers (
 
 DROP TABLE IF EXISTS friend_requests CASCADE;
 CREATE TABLE friend_requests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    friend_id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_friend_sender FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    CONSTRAINT fk_friend_receiver FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    CONSTRAINT uc_sender_receiver UNIQUE (sender_id, receiver_id)
+    FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    UNIQUE (sender_id, receiver_id)
 );
 
 DROP TABLE IF EXISTS user_blocks CASCADE;
 CREATE TABLE user_blocks (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    block_id INT AUTO_INCREMENT PRIMARY KEY,
     blocker_id INT NOT NULL,
     blocked_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_blocker FOREIGN KEY (blocker_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    CONSTRAINT fk_blocked FOREIGN KEY (blocked_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    CONSTRAINT uc_blocker_blocked UNIQUE (blocker_id, blocked_id)
+    FOREIGN KEY (blocker_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (blocked_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    UNIQUE (blocker_id, blocked_id)
 );

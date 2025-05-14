@@ -1,5 +1,6 @@
-package com.example.backend.entity;
+package com.example.backend.entity.friend;
 
+import com.example.backend.entity.UserEntity;
 import com.example.backend.enums.FriendRequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +16,7 @@ public class FriendRequestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer friend_id;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
