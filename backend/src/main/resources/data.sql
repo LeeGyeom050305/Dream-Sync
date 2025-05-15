@@ -46,11 +46,11 @@ INSERT INTO bucket_list_numbers (bucket_list_id, user_id) VALUES
 
 INSERT INTO friend_requests (sender_id, receiver_id, status)
 VALUES
-(1, 2, 'pending'),     -- test → Alice 요청 중
-(2, 3, 'accepted'),    -- Alice → Bob 친구 수락됨
-(3, 6, 'pending'),     -- Bob → Eve 요청 중
-(4, 1, 'rejected'),    -- Carol → test 거절됨
-(6, 2, 'accepted');    -- Eve → Alice 친구 수락됨
+(1, 2, 'PENDING'),     -- test → Alice 요청 중
+(2, 3, 'ACCEPTED'),    -- Alice → Bob 친구 수락됨
+(3, 6, 'PENDING'),     -- Bob → Eve 요청 중
+(4, 1, 'REJECTED'),    -- Carol → test 거절됨
+(6, 2, 'ACCEPTED');    -- Eve → Alice 친구 수락됨
 
 INSERT INTO user_blocks (blocker_id, blocked_id)
 VALUES

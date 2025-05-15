@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,10 +73,18 @@ public class FriendService {
     }
 
     @Transactional(readOnly = true)
-    public FriendListResponseDto getFriendList(Integer userId) {
-        // 수정된 메서드명 사용
-        List<FriendRequestEntity> accepted = friendRequestRepo.findByUserIdAndStatus(
-                userId, FriendRequestStatus.ACCEPTED);
+    public FriendListResponseDto getFriendListById(Integer userId) {
+        // 보낸 요청 중 ACCEPTED
+        List<FriendRequestEntity> sentAccepted = friendRequestRepo
+                .findBySenderIdUserIdAndStatus(userId, FriendRequestStatus.ACCEPTED);
+        // 받은 요청 중 ACCEPTED
+        List<FriendRequestEntity> receivedAccepted = friendRequestRepo
+                .findByReceiverIdUserIdAndStatus(userId, FriendRequestStatus.ACCEPTED);
+
+        // 두 리스트 합치기
+        List<FriendRequestEntity> accepted = new ArrayList<>();
+        accepted.addAll(sentAccepted);
+        accepted.addAll(receivedAccepted);
 
         List<UserDto> friends = accepted.stream()
                 .map(req -> req.getSenderId().getUserId().equals(userId)

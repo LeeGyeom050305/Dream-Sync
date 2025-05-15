@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.friend.*;
 import com.example.backend.service.FriendService;
+import com.example.backend.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,14 @@ public class FriendController {
 
     // 친구 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<FriendListResponseDto> getFriendList(@RequestParam Integer currentUserId) {
-        return ResponseEntity.ok(friendService.getFriendList(currentUserId));
+    public ResponseEntity<FriendListResponseDto> getFriendList() {
+        return ResponseEntity.ok(friendService.getFriendListById(SecurityUtil.currentUserId()));
+    }
+
+    // 친구 목록 조회
+    @GetMapping("/listById")
+    public ResponseEntity<FriendListResponseDto> getFriendListById(@RequestParam Integer currentUserId) {
+        return ResponseEntity.ok(friendService.getFriendListById(currentUserId));
     }
 
     // 공통 친구 조회

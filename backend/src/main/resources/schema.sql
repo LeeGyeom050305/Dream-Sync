@@ -56,10 +56,10 @@ CREATE TABLE bucket_list_numbers (
 
 DROP TABLE IF EXISTS friend_requests CASCADE;
 CREATE TABLE friend_requests (
-    friend_id INT AUTO_INCREMENT PRIMARY KEY,
+    request_id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'ACCEPTED', 'REJECTED')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
