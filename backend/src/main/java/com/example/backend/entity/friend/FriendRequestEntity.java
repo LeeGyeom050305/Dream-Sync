@@ -16,7 +16,7 @@ public class FriendRequestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer friend_id;
+    private Integer requestId;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
