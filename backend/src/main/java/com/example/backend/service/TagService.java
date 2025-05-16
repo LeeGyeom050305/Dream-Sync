@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class TagService {
                         .tagId(bt.getTag().getTagId())
                         .tagName(bt.getTag().getTagName())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return TagsByBucketResponse.builder()
                 .bucketListId(bucketListId)
                 .tags(tags)
@@ -53,7 +52,7 @@ public class TagService {
         List<Integer> bucketIds = bucketTagRepository.findByTag(tag)
                 .stream()
                 .map(bt -> bt.getBucketList().getBucketListId())
-                .collect(Collectors.toList());
+                .toList();
         return BucketsByTagResponse.builder()
                 .tagName(tagName)
                 .bucketListIds(bucketIds)
@@ -96,7 +95,7 @@ public class TagService {
                         .tagName((String) row[0])
                         .usageCount(((Number) row[1]).intValue())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return PopularTagsResponse.builder().tags(list).build();
     }
 
@@ -111,7 +110,7 @@ public class TagService {
                         .tagId(tag.getTagId())
                         .tagName(tag.getTagName())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return RelatedTagsResponse.builder()
                 .tagName(tagName)
                 .relatedTags(relatedDtos)
@@ -122,23 +121,23 @@ public class TagService {
     @Transactional(readOnly = true)
     public TagStatisticsResponse getTagStatistics(TagStatisticsRequest req) {
         String tagName = req.getTagName();
-        LocalDateTime start = Optional.ofNullable(req.getStartDate()).orElse(LocalDateTime.MIN);
-        LocalDateTime end = Optional.ofNullable(req.getEndDate()).orElse(LocalDateTime.now());
-        Integer total = bucketTagRepository
-                .countByTag_TagNameAndCreatedAtBetween(tagName, start, end);
 
-        // countByPeriod signature: (String tagName, LocalDateTime start, LocalDateTime end)
+        LocalDateTime end = req.getEndDate() != null ? req.getEndDate() : LocalDateTime.now();
+        LocalDateTime start = req.getStartDate() != null ? req.getStartDate() : end.minusDays(7);
+
+        Integer total = bucketTagRepository.countByTag_TagNameAndCreatedAtBetween(tagName, start, end);
         List<Object[]> statsRaw = bucketTagRepository.countByPeriod(tagName, start, end);
+
         List<PeriodUsageDto> periods = statsRaw.stream()
                 .map(row -> {
-                    String period = (String) row[0];               // 'YYYY-MM' 형식
-                    int count     = ((Number) row[1]).intValue(); // Long→int
+                    String period = (String) row[0]; // "2025-05"
+                    int count = parseInt(row[1]);    // count는 여전히 숫자일 수 있음
                     return PeriodUsageDto.builder()
                             .period(period)
                             .usageCount(count)
                             .build();
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return TagStatisticsResponse.builder()
                 .tagName(tagName)
@@ -153,7 +152,15 @@ public class TagService {
         int limit = Optional.ofNullable(req.getLimit()).orElse(10);
         List<String> suggestions = tagRepository.findTagNamesByPrefix(req.getPrefix(), PageRequest.of(0, limit));
         return AutocompleteResponse.builder()
-                .suggestions(suggestions)
+                .suggestions(suggestions.stream().toList())
                 .build();
+    }
+
+    private int parseInt(Object obj) {
+        return switch (obj) {
+            case Number n -> n.intValue();
+            case String s -> Integer.parseInt(s);
+            default -> throw new IllegalArgumentException("Unexpected data type: " + obj.getClass());
+        };
     }
 }
