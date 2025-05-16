@@ -11,7 +11,6 @@ import com.example.backend.repository.BucketTagRepository;
 import com.example.backend.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,12 +87,14 @@ public class TagService {
     public PopularTagsResponse getPopularTags(PopularTagsRequest req) {
         LocalDateTime since = Optional.ofNullable(req.getSince()).orElse(LocalDateTime.now().minusDays(7));
         int limit = Optional.ofNullable(req.getLimit()).orElse(10);
-        List<Pair<String, Integer>> pairs = bucketTagRepository.countByTagSince(since);
-        List<PopularTagDto> list = pairs.stream()
+
+        // Object[] -> [tagName:String, count:Long]
+        List<Object[]> raw = bucketTagRepository.countByTagSince(since);
+        List<PopularTagDto> list = raw.stream()
                 .limit(limit)
-                .map(p -> PopularTagDto.builder()
-                        .tagName(p.getFirst())
-                        .usageCount(p.getSecond())
+                .map(row -> PopularTagDto.builder()
+                        .tagName((String) row[0])
+                        .usageCount(((Number) row[1]).intValue())
                         .build())
                 .collect(Collectors.toList());
         return PopularTagsResponse.builder().tags(list).build();
@@ -123,15 +124,22 @@ public class TagService {
         String tagName = req.getTagName();
         LocalDateTime start = Optional.ofNullable(req.getStartDate()).orElse(LocalDateTime.MIN);
         LocalDateTime end = Optional.ofNullable(req.getEndDate()).orElse(LocalDateTime.now());
-        Integer total = bucketTagRepository.countByTag_TagNameAndCreatedAtBetween(tagName, start, end);
-        String pattern = "%Y-%m";
-        List<Pair<String, Integer>> stats = bucketTagRepository.countByPeriod(tagName, start, end, pattern);
-        List<PeriodUsageDto> periods = stats.stream()
-                .map(p -> PeriodUsageDto.builder()
-                        .period(p.getFirst())
-                        .usageCount(p.getSecond())
-                        .build())
+        Integer total = bucketTagRepository
+                .countByTag_TagNameAndCreatedAtBetween(tagName, start, end);
+
+        // countByPeriod signature: (String tagName, LocalDateTime start, LocalDateTime end)
+        List<Object[]> statsRaw = bucketTagRepository.countByPeriod(tagName, start, end);
+        List<PeriodUsageDto> periods = statsRaw.stream()
+                .map(row -> {
+                    String period = (String) row[0];               // 'YYYY-MM' 형식
+                    int count     = ((Number) row[1]).intValue(); // Long→int
+                    return PeriodUsageDto.builder()
+                            .period(period)
+                            .usageCount(count)
+                            .build();
+                })
                 .collect(Collectors.toList());
+
         return TagStatisticsResponse.builder()
                 .tagName(tagName)
                 .totalUsage(total)
