@@ -11,14 +11,12 @@ import com.example.backend.repository.BucketTagRepository;
 import com.example.backend.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +37,7 @@ public class TagService {
                         .tagId(bt.getTag().getTagId())
                         .tagName(bt.getTag().getTagName())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return TagsByBucketResponse.builder()
                 .bucketListId(bucketListId)
                 .tags(tags)
@@ -54,7 +52,7 @@ public class TagService {
         List<Integer> bucketIds = bucketTagRepository.findByTag(tag)
                 .stream()
                 .map(bt -> bt.getBucketList().getBucketListId())
-                .collect(Collectors.toList());
+                .toList();
         return BucketsByTagResponse.builder()
                 .tagName(tagName)
                 .bucketListIds(bucketIds)
@@ -88,14 +86,16 @@ public class TagService {
     public PopularTagsResponse getPopularTags(PopularTagsRequest req) {
         LocalDateTime since = Optional.ofNullable(req.getSince()).orElse(LocalDateTime.now().minusDays(7));
         int limit = Optional.ofNullable(req.getLimit()).orElse(10);
-        List<Pair<String, Integer>> pairs = bucketTagRepository.countByTagSince(since);
-        List<PopularTagDto> list = pairs.stream()
+
+        // Object[] -> [tagName:String, count:Long]
+        List<Object[]> raw = bucketTagRepository.countByTagSince(since);
+        List<PopularTagDto> list = raw.stream()
                 .limit(limit)
-                .map(p -> PopularTagDto.builder()
-                        .tagName(p.getFirst())
-                        .usageCount(p.getSecond())
+                .map(row -> PopularTagDto.builder()
+                        .tagName((String) row[0])
+                        .usageCount(((Number) row[1]).intValue())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return PopularTagsResponse.builder().tags(list).build();
     }
 
@@ -110,7 +110,7 @@ public class TagService {
                         .tagId(tag.getTagId())
                         .tagName(tag.getTagName())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
         return RelatedTagsResponse.builder()
                 .tagName(tagName)
                 .relatedTags(relatedDtos)
@@ -121,17 +121,24 @@ public class TagService {
     @Transactional(readOnly = true)
     public TagStatisticsResponse getTagStatistics(TagStatisticsRequest req) {
         String tagName = req.getTagName();
-        LocalDateTime start = Optional.ofNullable(req.getStartDate()).orElse(LocalDateTime.MIN);
-        LocalDateTime end = Optional.ofNullable(req.getEndDate()).orElse(LocalDateTime.now());
+
+        LocalDateTime end = req.getEndDate() != null ? req.getEndDate() : LocalDateTime.now();
+        LocalDateTime start = req.getStartDate() != null ? req.getStartDate() : end.minusDays(7);
+
         Integer total = bucketTagRepository.countByTag_TagNameAndCreatedAtBetween(tagName, start, end);
-        String pattern = "%Y-%m";
-        List<Pair<String, Integer>> stats = bucketTagRepository.countByPeriod(tagName, start, end, pattern);
-        List<PeriodUsageDto> periods = stats.stream()
-                .map(p -> PeriodUsageDto.builder()
-                        .period(p.getFirst())
-                        .usageCount(p.getSecond())
-                        .build())
-                .collect(Collectors.toList());
+        List<Object[]> statsRaw = bucketTagRepository.countByPeriod(tagName, start, end);
+
+        List<PeriodUsageDto> periods = statsRaw.stream()
+                .map(row -> {
+                    String period = (String) row[0]; // "2025-05"
+                    int count = parseInt(row[1]);    // count는 여전히 숫자일 수 있음
+                    return PeriodUsageDto.builder()
+                            .period(period)
+                            .usageCount(count)
+                            .build();
+                })
+                .toList();
+
         return TagStatisticsResponse.builder()
                 .tagName(tagName)
                 .totalUsage(total)
@@ -145,7 +152,15 @@ public class TagService {
         int limit = Optional.ofNullable(req.getLimit()).orElse(10);
         List<String> suggestions = tagRepository.findTagNamesByPrefix(req.getPrefix(), PageRequest.of(0, limit));
         return AutocompleteResponse.builder()
-                .suggestions(suggestions)
+                .suggestions(suggestions.stream().toList())
                 .build();
+    }
+
+    private int parseInt(Object obj) {
+        return switch (obj) {
+            case Number n -> n.intValue();
+            case String s -> Integer.parseInt(s);
+            default -> throw new IllegalArgumentException("Unexpected data type: " + obj.getClass());
+        };
     }
 }
