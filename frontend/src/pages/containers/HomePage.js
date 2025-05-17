@@ -33,7 +33,7 @@ function MainPage() {
     padding: '32px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0px',
+    gap: '16px',
   };
 
   const rightPaneStyle = {
@@ -100,7 +100,7 @@ function MainPage() {
                 border: '1px solid #d1d5db',
                 fontSize: '14px',
                 outline: 'none',
-                width: '300px', // 크기 확장
+                width: '300px', 
               }}
             />
           </div>
