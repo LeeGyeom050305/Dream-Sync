@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/buckets")
@@ -28,14 +27,14 @@ public class BucketListController {
     public List<BucketListDTO> getAll() {
         return bucketListService.getAllBuckets().stream()
                 .map(BucketListDTO::new)
-                .collect(Collectors.toList());
+                .toList(); // Java 16+
     }
 
     @GetMapping("/sorted")
     public List<BucketListDTO> getAllSorted() {
         return bucketListService.getAllSortedByInsertDate().stream()
                 .map(BucketListDTO::new)
-                .collect(Collectors.toList());
+                .toList(); // Java 16+
     }
 
     // Read by ID
@@ -50,7 +49,7 @@ public class BucketListController {
     public List<BucketListDTO> getBucketsDoneY() {
         return bucketListService.getBucketsByDoneStatusY().stream()
                 .map(BucketListDTO::new)
-                .collect(Collectors.toList());
+                .toList(); // Java 16+
     }
 
     // Read - 'N'인 버킷 리스트 조회
@@ -58,7 +57,9 @@ public class BucketListController {
     public List<BucketListDTO> getBucketsDoneN() {
         return bucketListService.getBucketsByDoneStatusN().stream()
                 .map(BucketListDTO::new)
-                .collect(Collectors.toList());
+                .toList(); // Java 16+
+
+
     }
 
     // Update
@@ -85,7 +86,7 @@ public class BucketListController {
     public List<BucketListDTO> search(@RequestParam String keyword) {
         return bucketListService.searchByKeyword(keyword).stream()
                 .map(BucketListDTO::new)
-                .collect(Collectors.toList());
+                .toList(); // Java 16+
     }
 
     @GetMapping("/visible")
